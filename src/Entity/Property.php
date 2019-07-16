@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
@@ -12,7 +13,7 @@ class Property
 {
 
     CONST HEAT =  [
-        0 => 'Eletrique',
+        0 => 'Electrique',
         1 => 'Gaz'
     ];
 
@@ -24,11 +25,13 @@ class Property
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -39,58 +42,70 @@ class Property
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $surface;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $rooms;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $bedrooms;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $floor;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero
      */
     private $heat;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $adress;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $postal_code;
-
-    /**
      * @ORM\Column(type="boolean", options={"default": false})
+     * @Assert\Type("bool")
      */
     private $sold = false;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      */
     private $created_at;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Positive
+     */
+    private $postalcode;
+
 
     public function getId(): ?int
     {
@@ -235,18 +250,6 @@ class Property
         return $this;
     }
 
-    public function getpostal_code(): ?string
-    {
-        return $this->postal_code;
-    }
-
-    public function setpostal_code(string $postal_code): self
-    {
-        $this->postal_code = $postal_code;
-
-        return $this;
-    }
-
     public function getSold(): ?bool
     {
         return $this->sold;
@@ -270,4 +273,18 @@ class Property
 
         return $this;
     }
+
+    public function getPostalcode(): ?string
+    {
+        return $this->postalcode;
+    }
+
+    public function setPostalcode(string $postalcode): self
+    {
+        $this->postalcode = $postalcode;
+
+        return $this;
+    }
+
+
 }

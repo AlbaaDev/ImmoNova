@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'ImmoNova - Modifier propriétée' %}
+
+
+{% block body %}
+        <div class="container mt-4">
+                <h2>Créer un nouveau bien</h2>
+                {{ include('/admin/property/_form.html.twig', {form: form, button: 'Editer'}) }}
+        </div>
+{% endblock %}
+
+
+
