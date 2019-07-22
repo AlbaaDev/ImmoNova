@@ -57,24 +57,25 @@ class AdminPropertyController extends  AbstractController {
      *
      * @return Response
      */
-    public function create(Request $request) : Response {
+    public function create(Request $request, ValidatorInterface $validator) : Response {
+
         $property = new Property();
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($property);
+            $this->em->flush();
             $this->addFlash(
                 'success',
                 'Propriété crée avec succès'
             );
-            $this->em->persist($property);
-            $this->em->flush();
-            return $this->redirectToRoute('admin.property.index');
+            return $this->redirectToRoute('property.index');
         }
-
         return $this->render('admin/property/create.html.twig',
-            [   'property'  => $property,
-                'form'      => $form->createView()
+            ['property'     => $property,
+             'form'         => $form->createView(),
+             'soldBoxe'     => false
             ]);
     }
 
@@ -93,36 +94,40 @@ class AdminPropertyController extends  AbstractController {
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
         if($form->isSubmitted()) {
-            $errors = $validator->validate($property);
-            if(count($errors) > 0) {
-                $errorsString = (String) $errors;
-                return new Response($errorsString);
+            if($form->isValid()) {
+                $this->em->flush();
+                $this->addFlash(
+                    'success',
+                    'Propriété modifiée avec succès'
+                );
+                return $this->redirectToRoute('admin.property.index');
             }
-        }
-        if($form->isSubmitted() && $form->isValid()) {
-            $this->em->flush();
-            $this->addFlash(
-                'success',
-                'Propriété modifiée avec succès'
-            );
-            return $this->redirectToRoute('admin.property.index');
+            $errors = $validator->validate($property);
+            $errorsString = (String) $errors;
+            return $this->render('admin/property/edit.html.twig',
+                ['property' => $property,
+                 'form' => $form->createView(),
+                 'errors'       => $errorsString
+                ]);
         }
         return $this->render('admin/property/edit.html.twig',
-            ['property' => $property,
-             'form' => $form->createView()
+            ['property'     => $property,
+             'form'         => $form->createView(),
+             'soldBoxe'     => true
             ]);
     }
 
+
     /**
      * @param Property $property
-     * @Route("/admin/property/delete/{id}", name="admin.property.delete")
+     * @Route("/admin/property/delete/{id}", name="admin.property.delete", methods={"DELETE"})
      * @return Response
      */
     public function delete(Property $property, Request $request) : Response {
 
         $submittedToken = $request->request->get('token');
 
-        if ($this->isCsrfTokenValid('delete-item', $submittedToken)) {
+        if ($this->isCsrfTokenValid('delete-item' . $property->getId(), $submittedToken)) {
             $this->em->remove($property);
             $this->em->flush();
             $this->addFlash(
@@ -133,7 +138,7 @@ class AdminPropertyController extends  AbstractController {
 
         } else {
             $this->addFlash(
-                'warning',
+                'danger',
                 'Erreur lors de la tentative de suppréssion.'
             );
             return $this->redirectToRoute('admin.property.index');
