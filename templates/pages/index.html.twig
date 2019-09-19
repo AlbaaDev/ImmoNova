@@ -1,0 +1,177 @@
+{%  extends  "base.html.twig" %}
+
+{% block body  %}
+    <div class="container">
+        <div class="menu nav-select mt-5 mx-auto">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-achat" role="tab"
+                       aria-controls="nav-home" aria-selected="true">Acheter</a>
+                    <a class="nav-item nav-link" id="nav-louer-tab" data-toggle="tab" href="#nav-louer" role="tab"
+                       aria-controls="nav-profile" aria-selected="false">Louer</a>
+                    <a class="nav-item nav-link" id="nav-estimer-tab" data-toggle="tab" href="#nav-estimer" role="tab"
+                       aria-controls="nav-profile" aria-selected="false">Estimer</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-achat" role="tabpanel"
+                         aria-labelledby="nav-home-tab">
+                        <form action="{{ path('property.searchProperties') }}" method="GET">
+                            <input type="hidden" name="mode" value="achat">
+                            <div class="form-group">
+                                <input type="text" class="form-control mt-2"
+                                       id="searchLoc0"
+                                       placeholder="Ville ou code postale ?"
+                                       name="localisation"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control"
+                                       placeholder="Votre budget max ?"
+                                       name="price"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input name ="type" class="form-check-input" type="checkbox"
+                                       id="inlineCheckbox1"
+                                       value="0">
+                                <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                       value="1">
+                                <label class="form-check-label " for="inlineCheckbox2">Maison</label>
+                            </div>
+                            <button type="submit" class="btn btn-info">Rechercher</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade searchLoc" id="nav-louer" role="tabpanel" aria-labelledby="nav-louer-tab">
+                        <form action="{{ path('property.searchProperties') }}" method="GET">
+                                <input type="hidden" name="mode" value="louer">
+                                <div class="form-group">
+                                    <input type="text" class="form-control mt-2"
+                                           id="searchLoc1"
+                                           placeholder="Ville ou code postale ?"
+                                           name="localisation"
+                                           autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control"
+                                           name="price"
+                                           placeholder="Votre budget max ?"
+                                           id="price1">
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                           value="0">
+                                    <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input name ="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                           value="1">
+                                    <label class="form-check-label " for="inlineCheckbox2">Maison</label>
+                                </div>
+                                <button type="submit" class="btn btn-info">Rechercher</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="nav-estimer" role="tabpanel" aria-labelledby="nav-estimer-tab">
+                        <form action="{{ path('property.searchProperties') }}" method="GET">
+                                <input type="hidden" name="mode" value="estimer">
+                                <p class="text-center mt-2">Estimez gratuitement !</p>
+                                <input type="text"
+                                       id="searchLoc2"
+                                       class="form-control"
+                                       placeholder="Votre adresse ?"
+                                       name="localisation">
+                                <button type="submit" class="btn btn-info mt-2">Rechercher</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+        <h2 class="text-center mt-5">Nouveaux ! </h2>
+        <div class="row flex mt-4">
+            {% for property in properties %}
+                <div class="col-sm-3">
+                    <div class="card">
+                        {% if property.images %}
+                                <div id="carousel{{ property.id }}"  class="carousel slide" data-ride="carousel"
+                                     data-interval="false">
+                                    {% if property.images|length > 1 %}
+                                        <ol class="carousel-indicators">
+                                            {% for image in property.images  %}
+                                                <li data-target="#carousel{{ property.id }}" data-slide-to="{{ loop.index0 }}"></li>
+                                            {% endfor %}
+                                        </ol>
+                                    {% endif %}
+                                    <div class="carousel-inner">
+                                        {% for image in property.images  %}
+                                            <div  {% if loop.index0 == 0 %}
+                                                        class="carousel-item active"
+                                                  {% else %}
+                                                      class="carousel-item"
+                                                  {% endif  %}>
+                                                <img class="card-img-top"
+                                                     src="{{ vich_uploader_asset(image, 'imageFile')
+                                                        | imagine_filter('thumb') }}"
+                                                     alt="{{ property.title }}" >
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if property.images|length > 1 %}
+                                        <a class="carousel-control-prev" href="#carousel{{ property.id }}" role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel{{ property.id }}" role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+
+                        {% else %}
+                            <img class="card-img-top"
+                                 src="{{ '/images/properties/empty.jpg' }}" alt="{{ property.title }}" >
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ path('property.show', {id : property.id, slug : property.slug}) }}">
+                                    {{ property.title }}
+                                </a>
+                            </h5>
+                            <p class="card-text">
+                                {{ property.city }} ({{ property.postalcode}})
+                            </p>
+                            <div class="text-primary">
+                                {{ property.getFormatedPrice() }}  €
+                            </div>
+                            <a  class="btn btn-outline-success mt-2"
+                                href="{{ path('property.show', {id: property.id, slug:property.slug}) }}">
+                                Plus de détails <i class="far fa-eye ml-2"></i>
+                            </a>
+                            {% if favoris is defined %}
+                                {% if property.id not in favoris %}
+                                    <a  id="ajouterPanier"
+                                        class="btn btn-outline-info mt-2"
+                                        href="{{ path('property.ajouterPanier', {id: property.id}) }}">
+                                        Ajouter aux favoris<i class="far fa-heart ml-2"></i>
+                                    </a>
+                                {%  else  %}
+                                    <a class="btn btn-outline-danger mt-2"
+                                       href="{{ path('property.removeFavoris', {id:
+                                        property.id}) }}">
+                                        Retirer des favoris
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

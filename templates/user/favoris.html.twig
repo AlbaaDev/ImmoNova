@@ -1,0 +1,47 @@
+{%  extends "base.html.twig" %}
+
+{% block title  'Mon panier' %}
+
+{% block body  %}
+
+    <div class="container mt-4">
+        {% if not app.user %}
+            <div class="alert alert-warning" role="alert">
+                Vous n'êtes pas connecté.
+                <a class="link ml-2" href="{{ path('app_login') }}">Me connecter</a>
+            </div>
+        {% endif %}
+        <a class="link ml-2" href="{{ path('property.clear') }}">Effacer mes favoris</a>
+        <table class="table">
+
+
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Nom propriété</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% if properties is not defined %}
+                    <tr>
+                        <td>Aucun favoris</td>
+                    </tr>
+                    {% else %}
+                        {% for property in properties %}
+                            <tr>
+                                <td>{{ property.title }}</td>
+                                <td>{{ property.price }}</td>
+                                <td>
+
+                                    <a class="link ml-2" href="{{ path('property.removeFavoris', {id: property.id}) }}">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+                    {% endif %}
+        </table>
+    </div>
+{% endblock %}
