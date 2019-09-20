@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="20ed7e3a-5dbc-4f9d-88e5-d9d928e27ac0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/dev/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/dev/monolog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -303,7 +303,7 @@
       <workItem from="1568942194125" duration="44000" />
       <workItem from="1568942462391" duration="1067000" />
       <workItem from="1568943685705" duration="2369000" />
-      <workItem from="1568980020786" duration="4599000" />
+      <workItem from="1568980020786" duration="5615000" />
     </task>
     <task id="LOCAL-00001" summary="CRUD">
       <created>1563312234755</created>
