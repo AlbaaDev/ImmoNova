@@ -4,12 +4,17 @@
 
 {% block body %}
     <div class="container mt-4 d-flex flex-column justify-content-center align-items-center">
-        <h1 class="text-center">Inscription</h1>
-        {{ form_start(registrationForm, {'attr': {'style': 'width: 300px'}}) }}
-                {{ form_row(registrationForm.username) }}
-                {{ form_row(registrationForm.password) }}
-                {{ form_row(registrationForm.agreeTerms) }}
-                <button class="btn btn-lg btn-info mt-3 btn-block">S'enregistrer</button>
-        {{ form_end(registrationForm) }}
+        <div class="card" style="width: 500px;">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                <h1 class="text-center">Inscription</h1>
+                {{ form_start(registrationForm, {'attr': {'style': 'width: 300px'}}) }}
+                    {{ form_row(registrationForm.username) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.password) }}
+                    {{ form_row(registrationForm.agreeTerms) }}
+                    <button class="btn btn-lg btn-info mt-3 btn-block">S'enregistrer</button>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

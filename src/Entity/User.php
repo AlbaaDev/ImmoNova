@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -25,6 +26,11 @@ class User implements UserInterface, \Serializable
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -35,7 +41,23 @@ class User implements UserInterface, \Serializable
      */
     private $password;
 
-    private $confirm_password;
+    /**
+     * Plain password. Used for model validation. Must not be persisted.
+     *
+     * @var string
+     */
+    private $newPassword;
+
+    /**
+     *
+     * @var string
+     */
+    private $newEmail;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Favoris", mappedBy="user", cascade={"persist", "remove"})
+    */
+    private $favoris;
 
     public function getId(): ?int
     {
@@ -148,16 +170,75 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @param $email
+     *
+     * @return User
      */
-    public function getConfirmPassword() {
-        return $this->confirm_password;
+    public function setEmail($email) {
+        $this->email = $email;
+        return $this;
     }
 
     /**
-     * @param mixed $confirm_password
+     * @return string
      */
-    public function setConfirmPassword($confirm_password): void {
-        $this->confirm_password = $confirm_password;
+    public function getEmail() {
+        return $this->email;
     }
+
+    /**
+     * @param $favoris
+     *
+     * @return User
+     */
+    public function setFavoris($favoris) {
+        $this->favoris = $favoris;
+        return $this;
+    }
+
+    /**
+     * @return Favoris
+     */
+    public function getFavoris() {
+        return $this->favoris;
+    }
+
+    /**
+     * @param $newPassword
+     *
+     * @return User
+     */
+    public function setNewPassword($newPassword) {
+        $this->newPassword = $newPassword;
+        return $this;
+}
+
+    /**
+     * @return mixed
+     */
+    public function getNewPassword() {
+        return $this->newPassword;
+    }
+
+    /**
+     * @param string $newEmail
+     *
+     * @return User
+     */
+    public function setNewEmail(string $newEmail): User {
+        $this->newEmail = $newEmail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewEmail(): ?string {
+        return $this->newEmail;
+    }
+
+    public function isEmailValid($emailInput) : bool {
+        return strcmp($emailInput, $this->getEmail()) == 0;
+    }
+
 }

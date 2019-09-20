@@ -1,0 +1,44 @@
+{%  extends  "base.html.twig" %}
+{% block body  %}
+    <div class="container d-flex  justify-content-center">
+        <div class="row">
+            <div class="mr-4 col-xs-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div class="custom-control custom-switch text-center">
+                            <input type="checkbox" class="custom-control-input" id="switchEmail">
+                            <label class="custom-control-label" for="switchEmail">Changer d'email</label>
+                        </div>
+                        <hr>
+                        <div id="emailDiv" class="disabledButton">
+                            {{ form_start(emailForm) }}
+                                {{ form_row(emailForm.email) }}
+                                {{ form_row(emailForm.newEmail) }}
+                                <button class="btn btn-primary mt-2">Changer d'email</button>
+                            {{ form_end(emailForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6" >
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div class="custom-control custom-switch text-center">
+                            <input type="checkbox" class="custom-control-input" id="switchPassword">
+                            <label class="custom-control-label" for="switchPassword">Changer de mot de passe</label>
+                        </div>
+                        <hr>
+                        <div id="passwordDiv" class="disabledButton">
+                            {{ form_start(passwordForm) }}
+                            {{ form_row(passwordForm.currentPassword) }}
+                            {{ form_row(passwordForm.newPassword) }}
+                            <button class="btn btn-primary mt-2">Changer de mot de
+                                passe</button>
+                            {{ form_end(passwordForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

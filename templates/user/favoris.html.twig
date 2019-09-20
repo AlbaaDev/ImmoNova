@@ -11,31 +11,38 @@
                 <a class="link ml-2" href="{{ path('app_login') }}">Me connecter</a>
             </div>
         {% endif %}
-        <a class="link ml-2" href="{{ path('property.clear') }}">Effacer mes favoris</a>
-        <table class="table">
-
-
+        {% if  app.session.get('favoris')|length > 0 %}
+            <a class="link ml-2" href="{{ path('property.clear') }}">Effacer mes favoris</a>
+        {% endif %}
+        <table class="table" id="myTable">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Nom propriété</th>
+                    <th scope="col">Adresse</th>
                     <th scope="col">Prix</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    {% if properties is not defined %}
-                    <tr>
-                        <td>Aucun favoris</td>
-                    </tr>
+                {% if  app.session.get('favoris')|length == 0 %}
+                        <tr>
+                            <td style="width: 100%" class="text-center">Aucun favoris</td>
+                        </tr>
                     {% else %}
                         {% for property in properties %}
                             <tr>
                                 <td>{{ property.title }}</td>
+                                <td>{{ property.adress }}</td>
                                 <td>{{ property.price }}</td>
-                                <td>
-
-                                    <a class="link ml-2" href="{{ path('property.removeFavoris', {id: property.id}) }}">
+                                <td id="parent{{ property.id }}">
+                                    <a class="btn ml-2 btnFavoris"
+                                       data-id="{{ property.id }}"
+                                       data-type="removeFavoris">
                                         <i class="far fa-trash-alt"></i>
+                                    </a>
+                                    <a class="link ml-2" href="{{ path('property.show', {id: property.id,
+                                        slug : property.slug}) }}">
+                                        <i class="far fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>

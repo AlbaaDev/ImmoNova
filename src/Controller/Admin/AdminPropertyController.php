@@ -5,15 +5,18 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\Property;
+use App\Form\DataTransformer\ArrayToImageTransformer;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class AdminPropertyController extends  AbstractController {
 
@@ -25,19 +28,25 @@ class AdminPropertyController extends  AbstractController {
     /**
      * @var ObjectManager
      */
-    private $em;
+    private $om;
 
+    /**
+     * @var ArrayToImageTransformer
+     */
+    private $transformer;
 
     /**
      * AdminPropertyController constructor.
-     * @param PropertyRepository $repository
-     * @param ObjectManager $em
+     *
+     * @param PropertyRepository      $repository
+     * @param ObjectManager           $om
+     * @param ArrayToImageTransformer $transformer
      */
-    public function __construct(PropertyRepository  $repository, ObjectManager $em) {
-
-
+    public function __construct(PropertyRepository  $repository, ObjectManager $om,
+                                ArrayToImageTransformer $transformer) {
         $this->repository = $repository;
-        $this->em = $em;
+        $this->transformer = $transformer;
+        $this->om = $om;
     }
 
     /**
@@ -57,15 +66,13 @@ class AdminPropertyController extends  AbstractController {
      *
      * @return Response
      */
-    public function create(Request $request, ValidatorInterface $validator) : Response {
-
+    public function create(Request $request) : Response {
         $property = new Property();
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($property);
-            $this->em->flush();
+            $this->om->persist($property);
+            $this->om->flush();
             $this->addFlash(
                 'success',
                 'Propriété crée avec succès'
@@ -82,33 +89,24 @@ class AdminPropertyController extends  AbstractController {
     /**
      * Editer une propriétée
      * @Route("/admin/property/edit/{id}", name="admin.property.edit")
-     * @param Property           $property
-     * @param Request            $request
-     * @param ValidatorInterface $validator
+     *
+     * @param Property $property
+     * @param Request  $request
      *
      * @return Response
      */
-    public function edit(Property $property, Request $request,
-                         ValidatorInterface $validator) : Response {
-
+    public function edit(Property $property, Request $request) : Response {
+//        foreach ($property->getImages() as $image) {
+//            $image->setImageFileName(
+//                new File($this->getParameter('property_images').'/'.$image->getImageName()));
+//        }
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
-        if($form->isSubmitted()) {
-            if($form->isValid()) {
-                $this->em->flush();
-                $this->addFlash(
-                    'success',
-                    'Propriété modifiée avec succès'
-                );
+
+        if($form->isSubmitted() && ($form->isValid())) {
+                $this->om->flush();
+                $this->addFlash('success','Propriété modifiée avec succès');
                 return $this->redirectToRoute('admin.property.index');
-            }
-            $errors = $validator->validate($property);
-            $errorsString = (String) $errors;
-            return $this->render('admin/property/edit.html.twig',
-                ['property' => $property,
-                 'form' => $form->createView(),
-                 'errors'       => $errorsString
-                ]);
         }
         return $this->render('admin/property/edit.html.twig',
             ['property'     => $property,
@@ -120,16 +118,18 @@ class AdminPropertyController extends  AbstractController {
 
     /**
      * @param Property $property
-     * @Route("/admin/property/delete/{id}", name="admin.property.delete", methods={"DELETE"})
+     * @param Request  $request
+     *
      * @return Response
+     * @Route("/admin/property/delete/{id}", name="admin.property.delete", methods={"DELETE"})
      */
     public function delete(Property $property, Request $request) : Response {
 
         $submittedToken = $request->request->get('token');
 
         if ($this->isCsrfTokenValid('delete-item' . $property->getId(), $submittedToken)) {
-            $this->em->remove($property);
-            $this->em->flush();
+            $this->om->remove($property);
+            $this->om->flush();
             $this->addFlash(
                 'success',
                 'Propriété supprimée avec succès'

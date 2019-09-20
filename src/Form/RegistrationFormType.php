@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -17,11 +18,8 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
         $builder
             ->add('username')
-
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
@@ -30,20 +28,7 @@ class RegistrationFormType extends AbstractType
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
             ])
-//            ->add('password', PasswordType::class, [
-//                'mapped' => false,
-//                'constraints' => [
-//                    new NotBlank([
-//                        'message' => 'Veuillez entrer un mot de passe.',
-//                    ]),
-//                    new Length([
-//                        'min' => 6,
-//                        'minMessage' => 'Le password doit contenir au moins {{ limit }} caracters',
-//                        // max length allowed by Symfony for security reasons
-//                        'max' => 4096,
-//                    ]),
-//                ],
-//            ])
+            ->add('email', EmailType::class)
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

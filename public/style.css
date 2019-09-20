@@ -1,0 +1,69 @@
+.nav-select a {
+    outline: 0;
+}
+
+.menu {
+    width: 400px;
+}
+
+.tab-content .btn-info {
+    width: 100%;
+}
+
+.listCities {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.listCities li:hover {
+    background-color: #5e9fb1;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+.show td {
+    padding-right: 30px;
+    padding-bottom: 20px;
+}
+
+i.fa-heart {
+    color: red;
+}
+
+.btnWidth {
+    width: 100%;
+}
+
+#menuContainer {
+    height: 420px;
+}
+
+img {
+    width: 100%;
+}
+
+/*#menu {*/
+/*   border: 1px solid black;*/
+/*}*/
+
+#menuContainer {
+    background-image: url("images/homeImage.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+#nav-tabContent {
+    background-color: whitesmoke;
+}
+
+.item-color {
+    color: black;
+}
+
+.disabledButton {
+    pointer-events: none;
+    opacity: 0.4;
+}

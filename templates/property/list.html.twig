@@ -1,0 +1,91 @@
+{%  extends "base.html.twig" %}
+
+{% block title  'Acheter' %}
+
+
+{% block body  %}
+    <div class="container mt-4">
+        <div class="row flex mt-4">
+                {% for property in properties %}
+                    <div class="col-sm-3">
+                        <div class="card">
+                            {% if property.images %}
+                                <div id="carousel{{ property.id }}"  class="carousel slide" data-ride="carousel"
+                                     data-interval="false">
+                                    {% if property.images|length > 1 %}
+                                        <ol class="carousel-indicators">
+                                            {% for image in property.images  %}
+                                                <li data-target="#carousel{{ property.id }}" data-slide-to="{{ loop.index0 }}"></li>
+                                            {% endfor %}
+                                        </ol>
+                                    {% endif %}
+                                    <div class="carousel-inner">
+                                        {% for image in property.images  %}
+                                            <div  {% if loop.index0 == 0 %}
+                                                class="carousel-item active"
+                                            {% else %}
+                                                class="carousel-item"
+                                                    {% endif  %}>
+                                                <img class="card-img-top"
+                                                     src="{{ vich_uploader_asset(image, 'imageFile')
+                                                     | imagine_filter('thumb') }}"
+                                                     alt="{{ property.title }}" >
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if property.images|length > 1 %}
+                                        <a class="carousel-control-prev" href="#carousel{{ property.id }}" role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel{{ property.id }}" role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+
+                            {% else %}
+                                <img class="card-img-top"
+                                     src="{{ '/images/properties/empty.jpg' }}" alt="{{ property.title }}" >
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{{ path('property.show', {id : property.id, slug : property.slug}) }}">
+                                        {{ property.title }}
+                                    </a>
+                                </h5>
+                                <p class="card-text">
+                                    {{ property.city }} ({{ property.postalcode}})
+                                </p>
+                                <div class="text-primary">
+                                    {{ property.getFormatedPrice() }}  €
+                                </div>
+                                <a  class="btn btn-outline-success mt-2 btnWidth"
+                                    href="{{ path('property.show', {id: property.id, slug:property.slug}) }}">
+                                    Plus de détails <i class="far fa-eye ml-2"></i>
+                                </a>
+                                    {% if property.id not in app.session.get('favoris') %}
+                                        <a  id="ajouterPanier"
+                                            class="btn btn-outline-info mt-2 btnFavoris btnWidth"
+                                            href="{{ path('property.ajouterFavoris', {id: property.id}) }}">
+                                            Ajouter aux favoris<i class="far fa-heart ml-2"></i>
+                                        </a>
+                                    {%  else  %}
+                                        <a class="btn btn-outline-danger mt-2 btnFavoris btnWidth"
+                                           href="{{ path('property.removeFavoris', {id:
+                                               property.id}) }}">
+                                            Retirer des favoris
+                                            <i class="far fa-trash-alt"></i>
+                                        </a>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+{% endblock %}

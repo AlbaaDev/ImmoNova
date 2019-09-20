@@ -41,70 +41,33 @@
                 <div class="col-md-5">
                     {% if soldBoxe is defined and soldBoxe == true %}
                         {{ form_row(form.sold) }}
-{#                        {{ form_label(form.sold) }}#}
-{#                        {{ form_widget(form.sold) }}#}
                     {% endif %}
                 </div>
                 <div class="col-md-5">
                     {{ form_row(form.description) }}
                 </div>
+                <div class="col-md-5">
+                    {{ form_row(form.mode) }}
+                </div>
+                <div class="col-md-5">
+                    {{ form_row(form.type) }}
+                </div>
+                <ul class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+
+                </ul>
+{#                {% for image in property.images  %}#}
+
+{#                        <img class="card-img-top"#}
+{#                             src="{{ vich_uploader_asset(image, 'imageFile')#}
+{#                             | imagine_filter('thumb') }}"#}
+{#                             alt="{{ property.title }}" >#}
+{#                    </div>#}
+{#                {% endfor %}#}
             </div>
             <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
     {{ form_widget(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
-
-
-
-{#{% block body %}#}
-
-{#    {{ form_start(form) }}#}
-{#    <div class="row">#}
-{#        <div class="col-md-4">#}
-{#            {{ form_row(form.title) }}#}
-{#        </div>#}
-{#        <div class="col-md-4">#}
-{#            {{ form_label(form.surface) }}#}
-{#            {{ form_widget(form.surface, {'attr' : {'class' : 'w-50'}}) }}#}
-{#        </div>#}
-{#        <div class="col-md-4">#}
-{#            {{ form_label(form.price) }}#}
-{#            {{ form_widget(form.price, {'attr' : {'class' : 'w-50'}}) }}#}
-{#        </div>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        <div class="col-md-2">#}
-{#            {{ form_row(form.rooms) }}#}
-{#        </div>#}
-{#        <div class="col-md-2">#}
-{#            {{ form_row(form.bedrooms) }}#}
-{#        </div>#}
-{#        <div class="col-md-2">#}
-{#            {{ form_row(form.heat) }}#}
-{#        </div>#}
-{#        <div class="col-md-2">#}
-{#            {{ form_row(form.floor) }}#}
-{#        </div>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        <div class="col-md-5">#}
-{#            {{ form_row(form.adress) }}#}
-{#        </div>#}
-{#        <div class="col-md-5">#}
-{#            {{ form_row(form.city) }}#}
-{#        </div>#}
-{#        <div class="col-md-5">#}
-{#            {{ form_row(form.postalcode) }}#}
-{#        </div>#}
-{#        <div class="col-md-5">#}
-{#            {{ form_row(form.sold) }}#}
-{#        </div>#}
-{#    </div>#}
-{#    {{ form_rest(form)}}#}
-{#    <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>#}
-{#    {{ form_end(form) }}#}
-
-{#{% endblock %}#}
 
 
 

@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
@@ -19,9 +22,15 @@ class Property
         1 => 'Gaz'
     ];
 
-    public function __construct() {
-        $this->created_at = new \DateTime();
-    }
+    CONST TYPE = [
+        0 => 'Appartement',
+        1 => 'Maison'
+    ];
+
+    CONST MODE = [
+        0 => 'Achat',
+        1 => 'Louer'
+    ];
 
     /**
      * @ORM\Id()
@@ -32,13 +41,10 @@ class Property
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank
      * @Assert\Length(min = 2)
      */
-
-
-
     private $title;
 
     /**
@@ -46,14 +52,13 @@ class Property
      */
     private $description;
 
-
     /**
      * @ORM\Column(type="integer")
      * @Assert\Positive
      * @Assert\Range(
-        min = 10,
-        max = 400,
-        )
+            min = 10,
+            max = 400,
+            )
      */
     private $surface;
 
@@ -89,6 +94,18 @@ class Property
     private $heat;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\PositiveOrZero
+     */
+    private $mode;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min = 2)
@@ -109,6 +126,7 @@ class Property
     private $sold = false;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      *
      */
@@ -121,12 +139,26 @@ class Property
      */
     private $postalcode;
 
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="property", cascade={"persist", "remove"})
+     */
+    private $images;
+
+
+    public function __construct() {
+        $this->created_at = new \DateTime();
+        $this->images  = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
@@ -302,4 +334,91 @@ class Property
     }
 
 
+    /**
+     * @return Collection
+     */
+    public function getImages() {
+        return $this->images;
+    }
+
+    /**
+     * @param Image $image
+     *
+     * @return Property
+     */
+    public function addImage(Image $image) {
+
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setProperty($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $image
+     */
+    public function removeImage(Image $image)
+    {
+        $this->images->removeElement($image);
+        $image->setProperty(null);
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+                $image->setAdvert(null);
+        }
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getImageSize(): ?int {
+        return $this->imageSize;
+    }
+
+
+
+//    /**
+//     * @param int $imageSize
+//     */
+//    public function setImageSize(?int $imageSize): void {
+//        $this->imageSize = $imageSize;
+//    }
+//
+    public function setImages($images) {
+        $this->images = $images;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void {
+        $this->type = $type;
+    }
+
+    /**
+     * @param mixed $mode
+     *
+     * @return Property
+     */
+    public function setMode($mode) {
+        $this->mode = $mode;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMode() : ?string {
+        return $this->mode;
+    }
 }

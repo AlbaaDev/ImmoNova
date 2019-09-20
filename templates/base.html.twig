@@ -4,84 +4,264 @@
     <meta charset="UTF-8">
     <title>{% block title %}ImmoNova{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('style.css') }}"
+
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ path('home') }}">ImmoNova</a>
+    <a class="navbar-brand" href="{{ path('index') }}">ImmoNova</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link {% if current_menu is defined and current_menu == 'properties' %} active{% endif %}"
-                   href="{{ path('property.index') }}">
-                    Acheter
-                </a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Que recherchez-vous ?"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
-        </form>
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle ml-2 btn btn-info" type="button"
-                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ app.user.username }}
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Mon profile</a>
-                    <a class="dropdown-item" href="#">Méssagerie</a>
-                    <a class="dropdown-item" href="#">Réglages</a>
-                    <a class="dropdown-item" href=" {{ path('app_logout') }}">Déconnexion</a>
-                </div>
-            </div>
-
-
-        {% else %}
-            <a class="link ml-2" href="{{ path('app_login') }}">Connexion</a>
-            <a class="nav-link"
-               href="{{ path('app_register') }}">
-                S'enregistrer
+{#        <ul class="navbar-nav mr-auto">#}
+{#            <li class="nav-item {% if current_menu is defined and current_menu == 'properties' %}#}
+{#                     active#}
+{#                    {% else%}#}
+{#                    {% endif %}">#}
+{#                <a class="nav-link"#}
+{#                   href="{{ path('property.index') }}">#}
+{#                    Acheter#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {% if current_menu is defined and current_menu == 'louer' %} active{% endif %}">#}
+{#                <a class="nav-link"#}
+{#                   href="{{ path('property.louer') }}">#}
+{#                    Louer#}
+{#                </a>#}
+{#            </li>#}
+{#        </ul>#}
+        <ul class="navbar-nav ml-auto">
+            <a href="{{ path('property.showFavoris') }}" class="link ml-2" id="mesFavoris">
+                Mes favoris
+                {% set nbFavoris = app.session.get('favoris')|length %}
+                {% if nbFavoris is defined and nbFavoris >= 1  %}
+                    <span class="badge badge-warning">{{ nbFavoris }}</span>
+                {% endif %}
             </a>
-        {% endif %}
-
-
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="link ml-2" href="{{ path('admin.property.index') }}">Admin</a>
+            {%endif%}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle ml-2 btn btn-info" type="button"
+                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ app.user.username }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+{#                        <a class="dropdown-item" href="#">Méssagerie</a>#}
+                        <a class="dropdown-item" href="{{ path('user.settings') }}">Réglages</a>
+                        <a class="dropdown-item" href=" {{ path('app_logout') }}">Déconnexion</a>
+                    </div>
+                </div>
+            {% else %}
+                <a class="link ml-2" href="{{ path('app_login') }}">Connexion</a>
+                <a class="link ml-2"
+                   href="{{ path('app_register') }}">
+                    S'enregistrer
+                </a>
+            {% endif %}
+        </ul>
     </div>
 </nav>
 
-
     {% for label, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ label }} text-center d-flex justify-content-center"  role="alert">
+            <div id="message" class="alert alert-{{ label }} text-center d-flex justify-content-center mb-0"
+                 role="alert">
                 <p>
                     {{ message }}
                 </p>
                 <button type="button" class="close pl-3 pb-3" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span id="closeMessage" aria-hidden="true">&times;</span>
                 </button>
             </div>
         {% endfor %}
     {% endfor %}
 
 {% block body %}{% endblock %}
+
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
+
+    <script src="https://kit.fontawesome.com/bf86dc1899.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
             integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/places.js@1.16.4"></script>
+
+    <script>
+        var placesAutocomplete = places({
+            appId: 'pl6F9SF5XGVI',
+            apiKey: 'd0bdf1366fff5daf60fd313e14575050',
+            container: document.getElementById('searchLoc0'),
+        });
+        var placesAutocomplete = places({
+            appId: 'pl6F9SF5XGVI',
+            apiKey: 'd0bdf1366fff5daf60fd313e14575050',
+            container: document.getElementById('searchLoc1')
+        });
+        var placesAutocomplete = places({
+            appId: 'pl6F9SF5XGVI',
+            apiKey: 'd0bdf1366fff5daf60fd313e14575050',
+            container: document.getElementById('searchLoc2')
+        });
+        places(placesAutocomplete);
+    </script>
+
+    <script type="text/javascript">
+        var $collectionHolder;
+
+        var $addTagButton = $('<button type="button" class="add_tag_link btn btn-info">Ajouter des photos</button>');
+        var $newLinkLi = $('<li></li>').append($addTagButton);
+        var $nav = ["#nav-achat", "#nav-louer", "#nav-estimer"];
+
+        $(document).ready(function() {
+            $collectionHolder = $('ul.images');
+            $collectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+            $collectionHolder.append($newLinkLi);
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagButton.on('click', function(e) {
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+
+
+        });
+        function addTagForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+            addTagFormDeleteLink($newFormLi);
+        }
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button" class="btn btn-danger mb-1">Supprimer la photo</button>');
+            $tagFormLi.append($removeFormButton);
+
+            $removeFormButton.on('click', function(e) {
+                $tagFormLi.remove();
+            });
+        }
+        $(document).on("click", "a.btnFavoris" , function() {
+            {% if app.user %}
+                var property_id = $(this).attr('data-id');
+                var parentDiv = $(this).parent();
+                $(this).remove();
+                var span = $("#mesFavoris").find('span');
+                span.remove();
+                switch ($(this).attr("data-type")) {
+                    case "addFavoris" :
+                        $.ajax(
+                            {
+                                url: "/proprietes/ajouterFavoris/" + property_id,
+                                method: "POST"
+                            }
+                        ).done(function(data) {
+                            switch (parentDiv.attr('id')) {
+                                case 'parentIndex' :
+                                    var removeLink = "<a class='btn btn-outline-danger mt-2 btnFavoris btnWidth' " +
+                                        "data-type='removeFavoris' data-id=" + property_id + ">Retirer des favoris " +
+                                        "<i class='far fa-trash-alt'></i> </a>";
+                                    break;
+                                case 'parentShow' :
+                                    var removeLink = "<a class='btn btn-outline-danger btnFavoris btnHeight' " +
+                                        "data-type='removeFavoris' data-id=" + property_id + ">Retirer des favoris " +
+                                        "<i class='far fa-trash-alt'></i> </a>";
+                                    break;
+                                default :
+                                    break;
+                            }
+                            parentDiv.append(removeLink);
+                            $("#mesFavoris").empty();
+                            var spanToAdd = "Mes favoris " +"<span class='badge badge-warning'>" + data.nbFavoris +
+                                "</span>";
+                            $("#mesFavoris").append(spanToAdd);
+                        });
+                        break;
+                    case "removeFavoris" :
+                        $.ajax(
+                            {
+                                url: "/proprietes/removeFavoris/" + property_id,
+                                method: "POST",
+                            }
+                        ).done(function(data) {
+                            switch (parentDiv.attr('id')) {
+                                case 'parentIndex' :
+                                    var addLink =
+                                        "<a class='btn btn-outline-info mt-2 btnFavoris btnWidth' " +
+                                        "data-type='addFavoris' data-id=" + property_id + ">Ajouter des favoris " +
+                                        "<i class='far fa-heart ml-2'></i> " +
+                                        "</a>";
+                                    break;
+                                case 'parentShow' :
+                                    var addLink =
+                                        "<a class='btn btn-outline-info btnFavoris btnHeight' " +
+                                        "data-type='addFavoris' data-id=" + property_id + ">Ajouter des favoris " +
+                                        "<i class='far fa-heart ml-2'></i> " +
+                                        "</a>";
+                                    break;
+                                case 'parent' + property_id :
+                                    $('#myTable tbody').html(data.tableData);
+                                default :
+                                    break;
+                            }
+                            parentDiv.append(addLink);
+                            if(data.nbFavoris >= 1) {
+                                var span = "<span class='badge badge-warning'>" + data.nbFavoris + "</span>";
+                                $("#mesFavoris").append(span);
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            {% else %}
+                window.location.href = "{{ path('app_login')}}";
+            {% endif %}
+        });
+        $(document).on("click", "#closeMessage" , function() {
+            $("#message").removeClass("d-flex").hide(600);
+        });
+        $(document).on("click", "#switchEmail" , function() {
+            if (document.getElementById("switchEmail").checked) {
+                $('#emailDiv').removeClass("disabledButton");
+                $('#passwordDiv').parent().addClass("disabledButton");
+            } else {
+                $('#emailDiv').addClass("disabledButton");
+                $('#passwordDiv').parent().removeClass("disabledButton");
+            }
+        });
+        $(document).on("click", "#switchPassword" , function() {
+            if (document.getElementById("switchPassword").checked) {
+                $('#passwordDiv').removeClass("disabledButton");
+                $('#emailDiv').parent().addClass("disabledButton");
+            } else {
+                $('#passwordDiv').addClass("disabledButton");
+                $('#emailDiv').parent().removeClass("disabledButton");
+            }
+        });
+    </script>
+
 {% endblock %}
 
 </body>

@@ -1,93 +1,98 @@
 {%  extends  "base.html.twig" %}
 
 {% block body  %}
-    <div class="container">
-        <div class="menu nav-select mt-5 mx-auto">
+    <div id="menuContainer" class="shadow-lg">
+{#        <img src="{{ asset('images/homeImage.jpg') | imagine_filter('home') }}">#}
+        <div class="menu nav-select mx-auto pt-4" id="menu">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-achat" role="tab"
+                    <a class="nav-item nav-link active item-color" id="nav-home-tab" data-toggle="tab"
+                       href="#nav-achat"
+                       role="tab"
                        aria-controls="nav-home" aria-selected="true">Acheter</a>
-                    <a class="nav-item nav-link" id="nav-louer-tab" data-toggle="tab" href="#nav-louer" role="tab"
+                    <a class="nav-item nav-link item-color" id="nav-louer-tab" data-toggle="tab" href="#nav-louer" role="tab"
                        aria-controls="nav-profile" aria-selected="false">Louer</a>
-                    <a class="nav-item nav-link" id="nav-estimer-tab" data-toggle="tab" href="#nav-estimer" role="tab"
-                       aria-controls="nav-profile" aria-selected="false">Estimer</a>
+                    {#                    <a class="nav-item nav-link" id="nav-estimer-tab" data-toggle="tab" href="#nav-estimer" role="tab"#}
+                    {#                       aria-controls="nav-profile" aria-selected="false">Estimer</a>#}
                 </div>
             </nav>
-            <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-achat" role="tabpanel"
-                         aria-labelledby="nav-home-tab">
-                        <form action="{{ path('property.searchProperties') }}" method="GET">
-                            <input type="hidden" name="mode" value="achat">
-                            <div class="form-group">
-                                <input type="text" class="form-control mt-2"
-                                       id="searchLoc0"
-                                       placeholder="Ville ou code postale ?"
-                                       name="localisation"
-                                       autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control"
-                                       placeholder="Votre budget max ?"
-                                       name="price"
-                                       autocomplete="off">
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input name ="type" class="form-check-input" type="checkbox"
-                                       id="inlineCheckbox1"
-                                       value="0">
-                                <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                       value="1">
-                                <label class="form-check-label " for="inlineCheckbox2">Maison</label>
-                            </div>
-                            <button type="submit" class="btn btn-info">Rechercher</button>
-                        </form>
-                    </div>
-                    <div class="tab-pane fade searchLoc" id="nav-louer" role="tabpanel" aria-labelledby="nav-louer-tab">
-                        <form action="{{ path('property.searchProperties') }}" method="GET">
-                                <input type="hidden" name="mode" value="louer">
-                                <div class="form-group">
-                                    <input type="text" class="form-control mt-2"
-                                           id="searchLoc1"
-                                           placeholder="Ville ou code postale ?"
-                                           name="localisation"
-                                           autocomplete="off">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control"
-                                           name="price"
-                                           placeholder="Votre budget max ?"
-                                           id="price1">
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                           value="0">
-                                    <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input name ="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                           value="1">
-                                    <label class="form-check-label " for="inlineCheckbox2">Maison</label>
-                                </div>
-                                <button type="submit" class="btn btn-info">Rechercher</button>
-                        </form>
-                    </div>
-                    <div class="tab-pane fade" id="nav-estimer" role="tabpanel" aria-labelledby="nav-estimer-tab">
-                        <form action="{{ path('property.searchProperties') }}" method="GET">
-                                <input type="hidden" name="mode" value="estimer">
-                                <p class="text-center mt-2">Estimez gratuitement !</p>
-                                <input type="text"
-                                       id="searchLoc2"
-                                       class="form-control"
-                                       placeholder="Votre adresse ?"
-                                       name="localisation">
-                                <button type="submit" class="btn btn-info mt-2">Rechercher</button>
-                        </form>
-                    </div>
+            <div class="tab-content px-3 py-3" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-achat" role="tabpanel"
+                     aria-labelledby="nav-home-tab">
+                    <form action="{{ path('property.searchProperties') }}" method="GET">
+                        <input type="hidden" name="mode" value="0">
+                        <div class="form-group">
+                            <input type="text" class="form-control mt-2"
+                                   id="searchLoc0"
+                                   placeholder="Ville ou code postale ?"
+                                   name="localisation"
+                                   autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                                   placeholder="Votre budget max ?"
+                                   name="price"
+                                   autocomplete="off">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name ="type" class="form-check-input" type="checkbox"
+                                   id="inlineCheckbox1"
+                                   value="0">
+                            <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                   value="1">
+                            <label class="form-check-label " for="inlineCheckbox2">Maison</label>
+                        </div>
+                        <button type="submit" class="btn btn-info">Rechercher</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade searchLoc" id="nav-louer" role="tabpanel" aria-labelledby="nav-louer-tab">
+                    <form action="{{ path('property.searchProperties') }}" method="GET">
+                        <input type="hidden" name="mode" value="1">
+                        <div class="form-group">
+                            <input type="text" class="form-control mt-2"
+                                   id="searchLoc1"
+                                   placeholder="Ville ou code postale ?"
+                                   name="localisation"
+                                   autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                                   name="price"
+                                   placeholder="Votre budget max ?"
+                                   id="price1">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name="type" class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                   value="0">
+                            <label class="form-check-label" for="inlineCheckbox1">Appartement</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input name ="type" class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                   value="1">
+                            <label class="form-check-label " for="inlineCheckbox2">Maison</label>
+                        </div>
+                        <button type="submit" class="btn btn-info">Rechercher</button>
+                    </form>
+                </div>
+                {#                    <div class="tab-pane fade" id="nav-estimer" role="tabpanel" aria-labelledby="nav-estimer-tab">#}
+                {#                        <form action="{{ path('property.searchProperties') }}" method="GET">#}
+                {#                                <input type="hidden" name="mode" value="estimer">#}
+                {#                                <p class="text-center mt-2">Estimez gratuitement !</p>#}
+                {#                                <input type="text"#}
+                {#                                       id="searchLoc2"#}
+                {#                                       class="form-control"#}
+                {#                                       placeholder="Votre adresse ?"#}
+                {#                                       name="localisation">#}
+                {#                                <button type="submit" class="btn btn-info mt-2">Rechercher</button>#}
+                {#                        </form>#}
+                {#                    </div>#}
             </div>
         </div>
+    </div>
+    <div class="container">
         <h2 class="text-center mt-5">Nouveaux ! </h2>
         <div class="row flex mt-4">
             {% for property in properties %}
@@ -130,13 +135,11 @@
                                         </a>
                                     {% endif %}
                                 </div>
-
-
                         {% else %}
                             <img class="card-img-top"
                                  src="{{ '/images/properties/empty.jpg' }}" alt="{{ property.title }}" >
                         {% endif %}
-                        <div class="card-body">
+                        <div class="card-body" id="parentIndex">
                             <h5 class="card-title">
                                 <a href="{{ path('property.show', {id : property.id, slug : property.slug}) }}">
                                     {{ property.title }}
@@ -148,21 +151,21 @@
                             <div class="text-primary">
                                 {{ property.getFormatedPrice() }}  €
                             </div>
-                            <a  class="btn btn-outline-success mt-2"
+                            <a  class="btn btn-outline-success mt-2 btnWidth"
                                 href="{{ path('property.show', {id: property.id, slug:property.slug}) }}">
                                 Plus de détails <i class="far fa-eye ml-2"></i>
                             </a>
                             {% if favoris is defined %}
                                 {% if property.id not in favoris %}
-                                    <a  id="ajouterPanier"
-                                        class="btn btn-outline-info mt-2"
-                                        href="{{ path('property.ajouterPanier', {id: property.id}) }}">
+                                    <a  class="btn btn-outline-info mt-2 btnFavoris btnWidth"
+                                        data-id="{{ property.id }}"
+                                        data-type="addFavoris">
                                         Ajouter aux favoris<i class="far fa-heart ml-2"></i>
                                     </a>
                                 {%  else  %}
-                                    <a class="btn btn-outline-danger mt-2"
-                                       href="{{ path('property.removeFavoris', {id:
-                                        property.id}) }}">
+                                    <a class="btn btn-outline-danger mt-2 btnFavoris btnWidth"
+                                       data-id="{{ property.id }}"
+                                       data-type="removeFavoris">
                                         Retirer des favoris
                                         <i class="far fa-trash-alt"></i>
                                     </a>
