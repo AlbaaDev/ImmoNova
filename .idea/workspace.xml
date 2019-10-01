@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="20ed7e3a-5dbc-4f9d-88e5-d9d928e27ac0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ImmoNova.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ImmoNova.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/prod/monolog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/inbox.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/profile.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -182,6 +190,7 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/vendor/easycorp/easy-log-handler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
     </include_path>
   </component>
   <component name="ProjectId" id="1OeflukQhSovzsxrL1dtiqN0xRt" />
@@ -303,7 +312,21 @@
       <workItem from="1568942194125" duration="44000" />
       <workItem from="1568942462391" duration="1067000" />
       <workItem from="1568943685705" duration="2369000" />
-      <workItem from="1568980020786" duration="5965000" />
+      <workItem from="1568980020786" duration="7628000" />
+      <workItem from="1569023831079" duration="3182000" />
+      <workItem from="1569073499296" duration="1159000" />
+      <workItem from="1569268345882" duration="1408000" />
+      <workItem from="1569405782500" duration="2146000" />
+      <workItem from="1569539929059" duration="1151000" />
+      <workItem from="1569612084673" duration="4485000" />
+      <workItem from="1569790134807" duration="29000" />
+      <workItem from="1569790597856" duration="1849000" />
+      <workItem from="1569793347575" duration="135000" />
+      <workItem from="1569793810913" duration="15000" />
+      <workItem from="1569794704107" duration="410000" />
+      <workItem from="1569873225872" duration="32000" />
+      <workItem from="1569875758854" duration="5047000" />
+      <workItem from="1569928144824" duration="625000" />
     </task>
     <task id="LOCAL-00001" summary="CRUD">
       <created>1563312234755</created>
