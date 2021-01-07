@@ -99,6 +99,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "easycorp/easy-log-handler": {
         "version": "1.0",
         "recipe": {
@@ -153,6 +156,15 @@
     },
     "jms/metadata": {
         "version": "2.0.0"
+    },
+    "laminas/laminas-code": {
+        "version": "4.0.0"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "liip/imagine-bundle": {
         "version": "1.8",
@@ -281,6 +293,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.3.2"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.3.2"
@@ -415,6 +430,9 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.20.0"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.11.0"
     },
@@ -435,6 +453,9 @@
     },
     "symfony/property-info": {
         "version": "v4.3.2"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.3.11"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -614,6 +635,9 @@
         "files": [
             "config/packages/vich_uploader.yaml"
         ]
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.4.0"

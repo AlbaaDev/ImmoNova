@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -24,7 +25,7 @@ class SecurityController extends AbstractController
      * @param AuthorizationCheckerInterface $authChecker
      */
     public function __construct(PropertyRepository $repository, SessionInterface $session,
-                                ObjectManager $om,
+                                EntityManagerInterface $om,
                                 AuthorizationCheckerInterface $authChecker) {
 
         $this->session = $session;

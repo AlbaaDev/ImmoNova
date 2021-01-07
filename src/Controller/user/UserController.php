@@ -9,6 +9,7 @@ use App\Form\ChangePassword;
 use App\Form\EmailResetFormType;
 use App\Form\PasswordResetFormType;
 use Symfony\Component\Form\FormError;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,7 +34,7 @@ class UserController  extends  AbstractController {
      * @param ObjectManager                $om
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(ObjectManager $om,
+    public function __construct(EntityManagerInterface $om,
                                 UserPasswordEncoderInterface $passwordEncoder) {
         $this->om = $om;
         $this->passwordEncoder = $passwordEncoder;

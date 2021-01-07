@@ -10,6 +10,7 @@ use App\Form\PropertyType;
 use App\Repository\PropertyRepository;;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ class AdminPropertyController extends  AbstractController {
      * @param ObjectManager           $om
      * @param ArrayToImageTransformer $transformer
      */
-    public function __construct(PropertyRepository  $repository, ObjectManager $om,
+    public function __construct(PropertyRepository  $repository, EntityManagerInterface $om,
                                 ArrayToImageTransformer $transformer) {
         $this->repository = $repository;
         $this->transformer = $transformer;

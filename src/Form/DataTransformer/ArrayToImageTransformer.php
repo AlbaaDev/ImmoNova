@@ -16,7 +16,7 @@ class ArrayToImageTransformer implements DataTransformerInterface {
 
     private $entityManager;
     private $om;
-    public function __construct(EntityManagerInterface $entityManager, ObjectManager $om)
+    public function __construct(EntityManagerInterface $entityManager, EntityManagerInterface $om)
     {
         $this->entityManager = $entityManager;
         $this->om = $om;

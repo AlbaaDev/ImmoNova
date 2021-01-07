@@ -6,6 +6,7 @@ use App\Entity\Favoris;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class PropertyController extends  AbstractController {
      * @param AuthorizationCheckerInterface $authChecker
      */
     public function __construct(PropertyRepository $repository, SessionInterface $session,
-                                ObjectManager $om, AuthorizationCheckerInterface $authChecker) {
+        EntityManagerInterface $om, AuthorizationCheckerInterface $authChecker) {
 
         $this->repository = $repository;
         $this->session = $session;
