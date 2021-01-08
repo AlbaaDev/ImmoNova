@@ -8,7 +8,7 @@ Instructions for database :
   3. In the .env file change db_user,db_password and db_name in DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
   4. In src folder run : 
   
-    composer install  in src folder  
+    composer install 
     php bin/console doctrine:migrations:migrate 
 
 
